@@ -115,7 +115,7 @@ public class Calculator extends VBox implements EventHandler<ActionEvent>{
 		equals.setOnAction(this);
 		
 		Button reset = new Button("C");
-		gd.add(reset, 0, 4, 3, 2, 1);
+		gd.add(reset, 0, 4, 4, 1);
 		reset.setPrefWidth(215);
 		reset.setOnAction(this);
 		
@@ -128,51 +128,56 @@ public class Calculator extends VBox implements EventHandler<ActionEvent>{
 		Button b = (Button) event.getSource();
 		String value = b.getText();
 		
-		if ("+-*/".contains(displayText.getText())) {
-			displayText.setText("");
+		switch(value) {
+			case "+" :
+				operator = value;
+				break;
+			case "-":
+				operator = value;
+				break;
+			case "*":
+				operator = value;
+				break;
+			case "/" :
+				operator = value;
+				break;
+			case "C":
+				operator = "";
+				number1 = "";
+				number2 = "";
+				break;
+			case "=":
+				double n1 = Double.parseDouble(number1);
+				double n2 = Double.parseDouble(number2);
+				double r = 0;
+				switch(operator) {
+					case "+":
+						r = n1 + n2; break;
+					case "-":
+						r = n1 - n2; break;
+					case "*":
+						r = n1 * n2; break;
+					case "/":
+						r = n1 / n2; break;
+				}
+				operator = ""; number1 = ""; number2 = "";
+				number1 = String.valueOf(r); 
+				break;
+				default: if (operator == null || operator.isEmpty()) {
+					number1 += value; 
+					break;
+				} 
+				else {
+					number2 += value; break;
+				}
+				if (operator == null) {
+					displayText.setText(number1 + number2);
+				} 
+				else {
+					displayText.setText(number1 + operator + number2);
+				}
+			
 		}
-		if("+-*/".contains(value)) {
-			operator = value;
-			number1 = displayText.getText();
-			displayText.setText("");
-		}
-		if (value == "=") {
-			number2 = displayText.getText();
-			displayText.setText("");
-			operacion();
-		}
-		else if (value == "C") {
-			displayText.setText("");
-			number1 = "";
-			number2 = "";
-			operador = null;
-		}
-		else {
-			displayText.setText(displayText.getText() + value);
-		}
-		
-	}
-	public void operacion() {
-		int n1 = Integer.valueOf(number1);
-		int n2 = Integer.valueOf(number2);
-		int n3;
-		
-		if (operator == "+") {
-			n3 = n1 + n2;
-			displayText.setText(String.valueOf(n3));
-		}
-		else if (operator == "-") {
-			n3 = n1-n2;
-			displayText.setText(String.valueOf(n3));
-		}
-		else if (operator == "*") {
-			n3 = n1*n2;
-			displayText.setText(String.valueOf(n3));
-		}
-		else if (operator == "/" ) {
-			n3 = n1/n2;
-			displayText.setText(String.valueOf(n3));
-		}
-	}
-
+	}	
+	
 }
